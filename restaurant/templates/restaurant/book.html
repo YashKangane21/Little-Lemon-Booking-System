@@ -1,0 +1,37 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+{% block content %}
+<section class="panel">
+  <div>
+    <h1>Make a reservation</h1>
+    {% if error %}<p class="notice error">{{ error }}</p>{% endif %}
+    {% if success %}<p class="notice success">Reservation confirmed!</p>{% endif %}
+    <form method="post" id="booking-form">
+      {% csrf_token %}
+      <label for="first_name">First name</label>
+      <input id="first_name" name="first_name" maxlength="100" required placeholder="Your name">
+      <label for="reservation_date">Reservation date</label>
+      <input id="reservation_date" name="reservation_date" type="date" value="{{ selected_date }}" min="{{ today }}" required>
+      <label for="reservation_slot">Reservation slot</label>
+      <select id="reservation_slot" name="reservation_slot" required>
+        <option value="">Select time</option>
+        {% for hour in "10,11,12,13,14,15,16,17,18,19,20"|make_list %}{% endfor %}
+        <option value="10">10 AM</option><option value="11">11 AM</option>
+        <option value="12">12 PM</option><option value="13">1 PM</option>
+        <option value="14">2 PM</option><option value="15">3 PM</option>
+        <option value="16">4 PM</option><option value="17">5 PM</option>
+        <option value="18">6 PM</option><option value="19">7 PM</option>
+        <option value="20">8 PM</option>
+      </select>
+      <button type="submit">Reserve</button>
+    </form>
+  </div>
+  <div>
+    <h2>Bookings for <span id="booking-date-label">{{ selected_date }}</span></h2>
+    <ul id="booking-list">
+      {% for booking in bookings %}<li>{{ booking.first_name }} - {{ booking.reservation_slot }}:00</li>{% empty %}<li>No Booking</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+<script src="{% static 'restaurant/booking.js' %}"></script>
+{% endblock %}

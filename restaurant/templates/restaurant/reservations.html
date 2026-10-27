@@ -1,0 +1,9 @@
+{% extends "restaurant/base.html" %}
+{% load static %}
+{% block content %}
+<section class="panel">
+  <div><h1>All Reservations</h1><pre id="reservations-json">Loading reservations...</pre></div>
+  <div><h2>Find reservations by date</h2><input type="date" id="filter-date"><button id="filter-button" type="button">Filter</button><p id="filter-result"></p></div>
+</section>
+<script src="{% static 'restaurant/reservations.js' %}"></script>
+{% endblock %}
